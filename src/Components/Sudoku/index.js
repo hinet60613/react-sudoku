@@ -5,8 +5,14 @@ const Cell = (props) => {
     const cell_class_name = ["sudoku_cell", props.is_given ? "sudoku_cell_given" : props.value ? "sudoku_cell_filled" : ""].join(' ');
     const isDisabled = (props.is_given);
     const onClick = () => {
-        setValue(10);
+        if (!value) {
+            setValue(1);
+        } else {
+            const next_value = (value % 9) + 1;
+            setValue(next_value);
+        }
     }
+    // TODO: check is valid.
     return (
         <button disabled={isDisabled} onClick={onClick} className={cell_class_name}>{value}</button>
     )
@@ -14,7 +20,6 @@ const Cell = (props) => {
 
 const MacroCell = (props) => {
     const final = [];
-    console.log(props.cells);
     const cells = props.cells ? props.cells : Array(9).fill({ value: null });
     for (const { value, is_given } of cells) {
         final.push(<Cell value={value} is_given={is_given ? is_given : false} />);
@@ -24,60 +29,144 @@ const MacroCell = (props) => {
             {final}
         </div>
     )
-    /*
-    (
-        <div className="sudoku_macrocell">
-            <Cell value="1" is_given />
-            <Cell value="" />
-            <Cell value="3" />
-            <Cell value="4" />
-            <Cell value="5" />
-            <Cell value="6" />
-            <Cell value="7" />
-            <Cell value="8" />
-            <Cell value="9" />
+}
+
+const ColGroup = (props) => {
+    const final = [];
+    for (let macrocell_id = 0; macrocell_id < 3; macrocell_id++) {
+        const cells = [];
+        for (const col of props.cols) {
+            cells.push(col.slice(macrocell_id * 3, macrocell_id * 3 + 3));
+        }
+        final.push(<MacroCell key={macrocell_id} cells={cells.flat(Infinity)} />);
+    }
+    return (
+        <div class="sudoku_col_group">
+            {final}
         </div>
     );
-    */
 }
-const Col = () => {
-    const cells = [
-        { value: 1, is_given: true },
-        { value: 2, },
-        { value: 3, },
-        { value: 4, },
-        { value: 5, },
-        { value: 6, },
-        { value: 7, },
-        { value: 8, },
-        { value: 9, }
-    ];
-    return (
-        <div className="sudoku_col">
-            <MacroCell cells={[...cells]} />
-            <MacroCell />
-            <MacroCell />
-        </div>
-    )
-}
-const Row = () => {
+
+const Board = (props) => {
+    const final = [];
+    for (let col_group_id = 0; col_group_id < 3; col_group_id++) {
+        const col_data = props.board.slice(col_group_id * 3, col_group_id * 3 + 3);
+        final.push(<ColGroup key={col_group_id} cols={col_data} />);
+    }
     return (
         <div>
-            <Col />
-            <Col />
-            <Col />
+            {final}
         </div>
-    )
+    );
 }
+
 const Sudoku = () => {
+    const board = [
+        [
+            { value: 1 },
+            { value: 2 },
+            { value: 3 },
+            { value: 4 },
+            { value: 5 },
+            { value: 6 },
+            { value: 7 },
+            { value: 8 },
+            { value: 9 },
+        ],
+        [
+            { value: 2 },
+            { value: 3 },
+            { value: 4 },
+            { value: 5 },
+            { value: 6 },
+            { value: 7 },
+            { value: 8 },
+            { value: 9 },
+            { value: 1 },
+        ],
+        [
+            { value: 3 },
+            { value: 4 },
+            { value: 5 },
+            { value: 6 },
+            { value: 7 },
+            { value: 8 },
+            { value: 9 },
+            { value: 1 },
+            { value: 2 },
+        ],
+        [
+            { value: 4 },
+            { value: 5 },
+            { value: 6 },
+            { value: 7 },
+            { value: 8 },
+            { value: 9 },
+            { value: 1 },
+            { value: 2 },
+            { value: 3 },
+        ],
+        [
+            { value: 5 },
+            { value: 6 },
+            { value: 7 },
+            { value: 8 },
+            { value: 9 },
+            { value: 1 },
+            { value: 2 },
+            { value: 3 },
+            { value: 4 },
+        ],
+        [
+            { value: 6 },
+            { value: 7 },
+            { value: 8 },
+            { value: 9 },
+            { value: 1 },
+            { value: 2 },
+            { value: 3 },
+            { value: 4 },
+            { value: 5 },
+        ],
+        [
+            { value: 7 },
+            { value: 8 },
+            { value: 9 },
+            { value: 1 },
+            { value: 2 },
+            { value: 3 },
+            { value: 4 },
+            { value: 5 },
+            { value: 6 },
+
+        ],
+        [
+            { value: 8 },
+            { value: 9 },
+            { value: 1 },
+            { value: 2 },
+            { value: 3 },
+            { value: 4 },
+            { value: 5 },
+            { value: 6 },
+            { value: 7 },
+        ],
+        [
+            { value: 9 },
+            { value: 1 },
+            { value: 2 },
+            { value: 3 },
+            { value: 4 },
+            { value: 5 },
+            { value: 6 },
+            { value: 7 },
+            { value: 8 },
+        ],
+    ];
 
     return (
-        <div>
-            <Col />
-            <Col />
-            <Col />
-        </div>
-    );
+        <Board board={board} />
+    )
 }
 
 export default Sudoku;
