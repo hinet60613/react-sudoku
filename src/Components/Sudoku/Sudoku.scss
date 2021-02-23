@@ -21,6 +21,10 @@
     width: 200px;
 }
 
+.sudoku_macrocell_invalid {
+    border-color: #993333;
+}
+
 .sudoku_col_group {
     display: flex;
     flex-wrap: wrap;
