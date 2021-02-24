@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './Sudoku.scss'
 const Cell = (props) => {
     //const [value, setValue] = useState(props.value);
-    const { is_given, } = props;
+    const { is_given } = props;
     const cell_class_name = ["sudoku_cell", props.is_given ? "sudoku_cell_given" : props.value ? "sudoku_cell_filled" : ""].join(' ');
     const isDisabled = (is_given);
     //debugger;
@@ -53,7 +53,7 @@ const MacroCell = (props) => {
         const { value, is_given } = obj;
         final.push(
             <Cell
-                cell_id={cell_id}
+                key={`cell_${cell_id}`}
                 value={value}
                 is_given={is_given ? is_given : false}
                 onClick={() => handleClick(cell_id)}
@@ -76,7 +76,7 @@ const ColGroup = (props) => {
         }
         final.push(
             <MacroCell
-                key={macrocell_id}
+                key={`macrocell_${macrocell_id}`}
                 macro_cell_id={props.col_group_id * 3 + macrocell_id}
                 cells={cells.flat(Infinity)}
             />
@@ -101,7 +101,12 @@ const Board = (props) => {
     );
     for (let col_group_id = 0; col_group_id < 3; col_group_id++) {
         const col_data = board.slice(col_group_id * 3, col_group_id * 3 + 3);
-        final.push(<ColGroup key={col_group_id} col_group_id={col_group_id} cols={col_data} />);
+        final.push(
+            <ColGroup
+                key={`colgroup_${col_group_id}`}
+                col_group_id={col_group_id}
+                cols={col_data}
+            />);
     }
     return (
         <div>
