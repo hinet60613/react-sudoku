@@ -31,4 +31,20 @@ describe('<Macrocell />', () => {
         ]
         render(<MacroCell cells={cells} />);
     })
+    it('macrocell with unique numbers should not be marked as invalid', () => {
+        const macrocell_data_invalid = [{ cell_id: 0, value: 1 }, { cell_id: 1, value: 2 },];
+        const testComponent = render(
+            <MacroCell cells={macrocell_data_invalid} />
+        );
+        const macrocell = testComponent.container.firstChild;
+        expect(macrocell.classList.contains('sudoku_macrocell_invalid')).toBe(false);
+    });
+    it('macrocell with duplicate numbers should marked as invalid', () => {
+        const macrocell_data_invalid = [{ cell_id: 0, value: 1 }, { cell_id: 1, value: 1 },];
+        const testComponent = render(
+            <MacroCell cells={macrocell_data_invalid} />
+        );
+        const macrocell = testComponent.container.firstChild;
+        expect(macrocell.classList.contains("sudoku_macrocell_invalid")).toBe(true);
+    });
 })
