@@ -28,16 +28,42 @@ describe('<Macrocell />', () => {
         expect(testComponent).toBeDefined();
     })
 
-    it('should not be marked as invalid with unique numbers', () => {
-        const macrocell_data_invalid = [{ cell_id: 0, value: 1 }, { cell_id: 1, value: 2 },];
-        const testComponent = render(
-            <MacroCell cells={macrocell_data_invalid} />
-        );
-        const macrocell = testComponent.container.firstChild;
-        expect(macrocell.classList.contains('sudoku_macrocell_invalid')).toBe(false);
+    describe('should not be marked as invalid with unique numbers', () => {
+        it('contains 9 numbers', () => {
+            const macrocell_data_valid = [
+                { cell_id: 0, value: 1 },
+                { cell_id: 1, value: 2 },
+                { cell_id: 2, value: 3 },
+                { cell_id: 10, value: 4 },
+                { cell_id: 11, value: 5 },
+                { cell_id: 12, value: 6 },
+                { cell_id: 19, value: 7 },
+                { cell_id: 20, value: 8 },
+                { cell_id: 21, value: 9 },
+            ];
+            const testComponent = render(<MacroCell cells={macrocell_data_valid} />);
+            const macrocell = testComponent.container.firstChild;
+            expect(macrocell.classList.contains('sudoku_macrocell_invalid')).toBe(false);
+        });
+        it('contains less than 9 numbers', () => {
+            const macrocell_data_valid = [
+                { cell_id: 0, value: 1 },
+                { cell_id: 1, value: 2 },
+                { cell_id: 2, value: 3 },
+                { cell_id: 10, value: null },
+                { cell_id: 11, value: null },
+                { cell_id: 12, value: null },
+                { cell_id: 19, value: 7 },
+                { cell_id: 20, value: 8 },
+                { cell_id: 21, value: 9 },
+            ];
+            const testComponent = render(<MacroCell cells={macrocell_data_valid} />);
+            const macrocell = testComponent.container.firstChild;
+            expect(macrocell.classList.contains('sudoku_macrocell_invalid')).toBe(false);
+        });
     });
     it('should marked as invalid with duplicate numbers', () => {
-        const macrocell_data_invalid = [{ cell_id: 0, value: 1 }, { cell_id: 1, value: 1 },];
+        const macrocell_data_invalid = [{ cell_id: 0, value: 1 }, { cell_id: 1, value: 1 }];
         const testComponent = render(
             <MacroCell cells={macrocell_data_invalid} />
         );
