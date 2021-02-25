@@ -1,5 +1,11 @@
 import { useState } from 'react';
 import './Sudoku.scss'
+
+const isValid = (input_list) => {
+    const val_list = input_list.filter(val => (val != null));
+    const val_set = new Set(val_list);
+    return val_set.size == val_list.length;
+}
 const Cell = (props) => {
     const { is_given } = props;
     const cell_class_name = ["sudoku_cell", props.is_given ? "sudoku_cell_given" : props.value ? "sudoku_cell_filled" : ""].join(' ');
@@ -25,12 +31,7 @@ const MacroCell = (props) => {
         }, {})
     );
 
-    const isInvalid = () => {
-        const value_list = Object.values(cells).map(cell => cell.value).filter(val => { return val != null });
-        const value_set = new Set(value_list);
-        return value_set.size !== value_list.length;
-    }
-
+    const isInvalid = () => !isValid(Object.values(cells).map(cell => cell.value));
     const handleClick = (cell_id) => {
         const { value, ...res_data } = cells[cell_id];
         const new_val = value % 9 + 1;
