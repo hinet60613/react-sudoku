@@ -22,16 +22,13 @@ describe('<Cell />', () => {
 });
 
 describe('<Macrocell />', () => {
-    it('should render Macrocell', () => {
-        const cells = [
-            {
-                cell_id: 0,
-                value: 1
-            }
-        ]
-        render(<MacroCell cells={cells} />);
+    it('can be rendered', () => {
+        const cells = [{ cell_id: 0, value: 1 }]
+        const testComponent = render(<MacroCell cells={cells} />);
+        expect(testComponent).toBeDefined();
     })
-    it('macrocell with unique numbers should not be marked as invalid', () => {
+
+    it('should not be marked as invalid with unique numbers', () => {
         const macrocell_data_invalid = [{ cell_id: 0, value: 1 }, { cell_id: 1, value: 2 },];
         const testComponent = render(
             <MacroCell cells={macrocell_data_invalid} />
@@ -39,7 +36,7 @@ describe('<Macrocell />', () => {
         const macrocell = testComponent.container.firstChild;
         expect(macrocell.classList.contains('sudoku_macrocell_invalid')).toBe(false);
     });
-    it('macrocell with duplicate numbers should marked as invalid', () => {
+    it('should marked as invalid with duplicate numbers', () => {
         const macrocell_data_invalid = [{ cell_id: 0, value: 1 }, { cell_id: 1, value: 1 },];
         const testComponent = render(
             <MacroCell cells={macrocell_data_invalid} />
