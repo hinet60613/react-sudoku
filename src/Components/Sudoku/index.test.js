@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 import renderer from 'react-test-renderer';
-import { Cell, MacroCell } from './index.js';
+import { Cell, ColGroup, MacroCell } from './index.js';
 
 describe('<Cell />', () => {
     it('can be rendered', () => {
@@ -70,4 +70,24 @@ describe('<Macrocell />', () => {
         const macrocell = testComponent.container.firstChild;
         expect(macrocell.classList.contains("sudoku_macrocell_invalid")).toBe(true);
     });
-})
+});
+
+describe('<ColGroup />', () => {
+    const cols = [
+        [1, 2, 3, 4, 5, 6, 7, 8, 9,],
+        [4, 5, 6, 7, 8, 9, 1, 2, 3,],
+        [7, 8, 9, 1, 2, 3, 4, 5, 6,]
+    ];
+    const data = cols.map((col, col_idx) => {
+        col.map((val, idx) => ({
+            cell_id: col_idx * 9 + idx,
+            value: val,
+        }))
+    });
+
+    it('can be rendered', () => {
+        const testComponent = render(<ColGroup cols={cols} />);
+        expect(testComponent).toBeDefined();
+    });
+
+});
