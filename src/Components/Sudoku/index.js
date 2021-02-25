@@ -32,7 +32,7 @@ const MacroCell = (props) => {
     );
 
     const isInvalid = () => {
-        const value_list = Object.values(cells).map(cell => cell.value);
+        const value_list = Object.values(cells).map(cell => cell.value).filter(val => { return val != null});
         const value_set = new Set(value_list);
         return value_set.size !== value_list.length;
     }
