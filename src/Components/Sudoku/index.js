@@ -1,20 +1,14 @@
 import { useState } from 'react';
 import './Sudoku.scss'
 const Cell = (props) => {
-    //const [value, setValue] = useState(props.value);
     const { is_given } = props;
     const cell_class_name = ["sudoku_cell", props.is_given ? "sudoku_cell_given" : props.value ? "sudoku_cell_filled" : ""].join(' ');
     const isDisabled = (is_given);
-    //debugger;
-
-    // TODO: check is valid.
-
     return (
         <button
             disabled={isDisabled}
             onClick={props.onClick}
-            className={cell_class_name}
-        >
+            className={cell_class_name} >
             {props.value}
         </button>
     )
@@ -32,7 +26,7 @@ const MacroCell = (props) => {
     );
 
     const isInvalid = () => {
-        const value_list = Object.values(cells).map(cell => cell.value).filter(val => { return val != null});
+        const value_list = Object.values(cells).map(cell => cell.value).filter(val => { return val != null });
         const value_set = new Set(value_list);
         return value_set.size !== value_list.length;
     }
@@ -109,14 +103,14 @@ const Board = (props) => {
             />);
     }
     return (
-        <div>
+        <div className="sudoku_board">
             {final}
         </div>
     );
 }
 
 const Sudoku = () => {
-    const board = [
+    const _board = [
         [1, 2, 3, 4, 5, 6, 7, 8, 9,],
         [4, 5, 6, 7, 8, 9, 1, 2, 3,],
         [7, 8, 9, 1, 2, 3, 4, 5, 6,],
@@ -127,6 +121,17 @@ const Sudoku = () => {
         [6, 7, 8, 9, 1, 2, 3, 4, 5,],
         [9, 1, 2, 3, 4, 5, 6, 7, 8,],
     ];
+    const board = [
+        [8, null, 1, null, null, 5, 6, null, 9],
+        [null, null, 9, null, null, null, null, 5, null],
+        [null, 5, 6, null, 9, 1, null, 7, 4],
+        [null, 3, null, 4, 7, null, null, null, 6],
+        [5, null, 8, 1, null, 2, 4, null, null],
+        [7, null, null, null, 3, 8, 9, null, 2],
+        [null, 2, null, null, null, 3, null, 6, null],
+        [null, null, null, null, 8, 7, null, 4, null],
+        [null, 8, 3, 2, 5, null, 7, null, null]
+    ]
 
     return (
         <Board board={board} />

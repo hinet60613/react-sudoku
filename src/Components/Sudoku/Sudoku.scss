@@ -32,7 +32,12 @@
     border: 3px solid #666;
     flex-direction: row;
 }
+
 .sudoku_row {
     border: 3px solid #999;
     flex-direction: column;
+}
+
+.sudoku_board {
+    width: 650px;
 }
